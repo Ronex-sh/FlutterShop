@@ -25,7 +25,7 @@ class Authentication{
   if(response.statusCode==201){
     //Success user Register
     var body=jsonDecode(response.body);
-    var data= body['data'];
+    var data= body["data"];
     return User.froJson(data);
   }
     return null;
@@ -44,11 +44,17 @@ class Authentication{
 
     http.Response response= await http.post(ApiUtl.AUTH_LOGIN,headers:Headers,body: Body);
 
+    print('after');
+
     if(response.statusCode==200){
       var body=jsonDecode(response.body);
-      var data=body['data'];
+      var data=body["data"];
+      print(data);
       return User.froJson(data);
     }
+    print(response.statusCode);
+
+    print(response.body);
 
       return null;
 

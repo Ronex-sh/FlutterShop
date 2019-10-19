@@ -12,4 +12,14 @@ class ApiUtl{
   static const String PRODUCTS=MAIN_API_URL + 'products';
 
   static const String PRODUCT=MAIN_API_URL + 'products/';
+
+  static const String COUNTRIES=MAIN_API_URL +"countries";
+  static  String CITIES(int id){
+   return MAIN_API_URL+'countries/'+id.toString() + '/cities';
+  }
+  static const String CATEGORIES=MAIN_API_URL+'categories';
+  static const String TAGS=MAIN_API_URL+'tags';
+  static  String STATES(int id){
+    return MAIN_API_URL+'countries/'+id.toString() + '/states';
+  }
 }

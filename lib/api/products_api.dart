@@ -32,7 +32,7 @@ class ProductsApi{
     return null;
   }
 
-  Future<Product> fetchproduct(int product_id)async{
+  Future<Product> fetchProduct(int product_id)async{
     String url = ApiUtl.PRODUCT + product_id.toString();
     http.Response response=await http.get(url,headers: Headers);
     if(response.statusCode==200){

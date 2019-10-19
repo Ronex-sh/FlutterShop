@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:generalshop/api/authentication.dart';
+import 'package:generalshop/api/helpers_api.dart';
 import 'package:generalshop/api/products_api.dart';
 import 'package:generalshop/product/product.dart';
+import 'package:generalshop/product/product_category.dart';
+import 'package:generalshop/utility/country.dart';
 
 void main (){
   runApp(GeneralShop());
@@ -22,15 +25,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  ProductsApi productsApi=ProductsApi();
+
+
+  HelpersApi helpersApi=HelpersApi();
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(title: Text('General Shop'),),
       body:FutureBuilder(
-            future:productsApi.fetchproduct(4),
-            builder: (BuildContext context,AsyncSnapshot<Product> snapShot){
+            future:helpersApi.fetchStates(3,1),
+            builder: (BuildContext context,AsyncSnapshot snapShot){
               switch(snapShot.connectionState){
 
                 case ConnectionState.none:
@@ -49,7 +54,12 @@ class _HomePageState extends State<HomePage> {
                     if(!snapShot.hasData){
                       return _error('no data');
                     }else{
-                      return _drawProduct(snapShot.data);
+                      return ListView.builder(
+
+                        itemBuilder: (context,int index){
+                          return _drawcard(snapShot.data[index].state_name);
+                        },
+                        itemCount: snapShot.data.length,);
 
                     }
                   }
@@ -61,6 +71,12 @@ class _HomePageState extends State<HomePage> {
             },
           ),
 
+    );
+  }
+  
+  _drawcard(var item){
+    return Card(
+      child: Text(item),
     );
   }
 

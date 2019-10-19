@@ -29,8 +29,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(title: Text('General Shop'),),
       body:FutureBuilder(
-            future:productsApi.fetchProducts(2),
-            builder: (BuildContext context,AsyncSnapshot<List<Product>> snapShot){
+            future:productsApi.fetchproduct(4),
+            builder: (BuildContext context,AsyncSnapshot<Product> snapShot){
               switch(snapShot.connectionState){
 
                 case ConnectionState.none:
@@ -49,13 +49,11 @@ class _HomePageState extends State<HomePage> {
                     if(!snapShot.hasData){
                       return _error('no data');
                     }else{
-                      return ListView.builder(itemBuilder:(_,int position){
-                        return _drawProduct(snapShot.data[position]);
-                      },itemCount: snapShot.data.length,
-                      );
+                      return _drawProduct(snapShot.data);
 
                     }
                   }
+
 
                   break;
               }
@@ -74,7 +72,7 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             Text(product.product_title),
             (product.images.length>0 )?
-            Image(image: NetworkImage(product.images[0]),):Container(),
+            Image(image: NetworkImage(product.images[1]),):Container(),
           ],
         ),
       ),

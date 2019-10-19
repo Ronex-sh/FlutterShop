@@ -10,4 +10,6 @@ class ApiUtl{
   static const String AUTH_LOGIN =MAIN_API_URL + "auth/login";
 
   static const String PRODUCTS=MAIN_API_URL + 'products';
+
+  static const String PRODUCT=MAIN_API_URL + 'products/';
 }

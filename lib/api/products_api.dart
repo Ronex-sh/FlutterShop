@@ -7,14 +7,15 @@ import 'package:http/http.dart'as http;
 import 'api_util.dart';
 
 class ProductsApi{
-  Future<List<Product>> fetchProducts(int page)async{
 
-    Map<String,String> Headers={
-      'Accept':'application/json',
-    };
+
+  Map<String,String> Headers={
+    'Accept':'application/json',
+  };
+
+  Future<List<Product>> fetchProducts(int page)async{
     String url = ApiUtl.PRODUCTS +'?page='+ page.toString();
     http.Response response= await http.get(url,headers: Headers);
-
     List<Product> products=[];
     if(response.statusCode==200){
       var body=jsonDecode(response.body);
@@ -28,6 +29,16 @@ class ProductsApi{
 
     }
 
+    return null;
+  }
+
+  Future<Product> fetchproduct(int product_id)async{
+    String url = ApiUtl.PRODUCT + product_id.toString();
+    http.Response response=await http.get(url,headers: Headers);
+    if(response.statusCode==200){
+      var body=jsonDecode(response.body);
+      return Product.fromJson(body['data']);
+    }
     return null;
   }
 }

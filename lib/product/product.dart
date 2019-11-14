@@ -1,6 +1,7 @@
 
 
 
+import 'package:generalshop/exception/exceptions.dart';
 import 'package:generalshop/product/product_category.dart';
 import 'package:generalshop/product/product_tag.dart';
 import 'package:generalshop/product/product_unit.dart';
@@ -25,6 +26,26 @@ class Product{
       this.reviews);
 
   Product.fromJson(Map<String,dynamic>jsonObject){
+// assert(jsonObject['product_id'] !=null,'product Id null); this just to dev in >>final app its removes
+    assert(jsonObject['product_id'] !=null,'product Id null');
+    assert(jsonObject['product_title'] !=null,'product title null');
+    assert(jsonObject['product_description'] !=null,'product description null');
+    assert(jsonObject['product_price'] !=null,'product price null');
+
+  //or used
+    if(jsonObject['product_id']==null){
+      throw PropertyIsRequired('product Id');
+    }
+    if(jsonObject['product_title']==null){
+      throw PropertyIsRequired('product Title');
+    }
+    if(jsonObject['product_description']==null){
+      throw PropertyIsRequired('product Description');
+    }
+    if(jsonObject['product_price']==null){
+      throw PropertyIsRequired('product Price');
+    }
+
     this.product_id=jsonObject['product_id'];
     this.product_title=jsonObject['product_title'];
     this.product_description=jsonObject['product_description'];
@@ -32,10 +53,13 @@ class Product{
     this.product_total=double.parse(jsonObject['product_total']);
     this.product_discount=double.parse(jsonObject['product_discount']);
     this.productCategory=ProductCategory.fromJson(jsonObject['product_category']);
-    _setTags(jsonObject['product_tags']);
+
+    this.tags=[];
+    if(jsonObject['product_tags']!=null){
+      _setTags(jsonObject['product_tags']);
+    }
     _setImages(jsonObject['product_images']);
     _setReviews(jsonObject['product_reviews']);
-
   }
 
   void _setReviews(List<dynamic>reviewsJson){
@@ -51,7 +75,7 @@ class Product{
   }
 
   void _setTags(List<dynamic>tagsJson){
-   this.tags=[];
+
     if(tagsJson.length>0){
       for(var item in tagsJson){
         if(item !=null){

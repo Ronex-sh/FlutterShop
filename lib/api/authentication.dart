@@ -6,11 +6,11 @@ import 'dart:convert';
 
 
 class Authentication{
+  Map<String,String> Headers={
+    'Accept':'application/json',
+  };
 
   Future<User>register(String first_name,String last_name,String email,String password)async{
-    Map<String,String> Headers={
-      'Accept':'application/json',
-    };
 
     Map<String,String>Body={
       'first_name':first_name,
@@ -26,6 +26,7 @@ class Authentication{
     //Success user Register
     var body=jsonDecode(response.body);
     var data= body["data"];
+
     return User.froJson(data);
   }
     return null;
@@ -34,9 +35,7 @@ class Authentication{
 
  Future<User> login(String email,String password)async{
 
-    Map<String,String> Headers={
-      'Accept':'application/json',
-    };
+
     Map<String,String> Body={
       'email': email,
       'password':password,
@@ -44,12 +43,12 @@ class Authentication{
 
     http.Response response= await http.post(ApiUtl.AUTH_LOGIN,headers:Headers,body: Body);
 
-    print('after');
+    print(response.statusCode);
 
     if(response.statusCode==200){
       var body=jsonDecode(response.body);
       var data=body["data"];
-      print(data);
+      print(body);
       return User.froJson(data);
     }
     print(response.statusCode);

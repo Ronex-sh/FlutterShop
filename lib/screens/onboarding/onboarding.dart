@@ -3,8 +3,11 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:generalshop/screens/home_page.dart';
 import 'package:generalshop/screens/onboarding/onboarding_screen.dart';
 import 'package:generalshop/screens/utilities/screen_utilities.dart';
+import 'package:generalshop/screens/utilities/size_config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'onboarding_model.dart';
 
@@ -26,6 +29,8 @@ class _OnBoardingState extends State<OnBoarding> {
     OnBoardingModel(image:"assets/images/Untitled-2.jpg" ,title: "Welcome 2",description: "qwertyuo o opok opok opok opok opok opokopok opok opok 2"),
     OnBoardingModel(image:"assets/images/Untitled-3.jpg" ,title: "Welcome 3",description: "qwertyuo o opok opok opok opok opok opokopok opok opok 3"),
   ];
+  ScreenConfig screenConfig;
+  WidgetSize widgetSize;
 
   @override
   void initState() {
@@ -39,6 +44,11 @@ class _OnBoardingState extends State<OnBoarding> {
   }
   @override
   Widget build(BuildContext context) {
+  //  ScreenConfig screenConfig =ScreenConfig(context);
+    // print(screenConfig.screenType);
+    screenConfig=ScreenConfig(context);
+    widgetSize=WidgetSize(screenConfig);
+
     double _mt =MediaQuery.of(context).size.height *0.2;
     screenHeight=MediaQuery.of(context).size.height;
     screenWidth=MediaQuery.of(context).size.width;
@@ -93,25 +103,31 @@ class _OnBoardingState extends State<OnBoarding> {
     );
   }
   Widget _showButton(){
+    double offset=(screenConfig.screenType==ScreenType.SMALL)?0.04:0.05;
     return Container(
 
       child: Transform.translate(
 
-        offset: Offset(0, -(screenHeight *0.05)),
+      //  offset: Offset(0, -(screenHeight *0.05)), before size screen responsive
+        offset: Offset(0, -(screenHeight *offset)),//after size screen responsive
         child: SizedBox(
 
           width: screenWidth*0.76,
-          height: 40,
+          height: widgetSize.buttonHeight,
           child: RaisedButton(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(26)),
 
             color: ScreenUtilities.mainBlue,
 
-            onPressed: (){
-
+            onPressed: ()async{
+              var pref=await  SharedPreferences.getInstance();
+              pref.setBool('is_seen', true);
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return  HomePage();
+              }));
             },
 
-            child: Text('START',style: TextStyle(color: Colors.white,letterSpacing: 1.3,fontSize: 18),),
+            child: Text('START',style: TextStyle(color: Colors.white,letterSpacing: 1.3,fontSize: widgetSize.buttonFontSize),),
           ),
         ),
       ),
@@ -128,8 +144,8 @@ class _OnBoardingState extends State<OnBoarding> {
               borderRadius: BorderRadius.circular(4),
               color: (i==currentIndex)?ScreenUtilities.mainBlue:ScreenUtilities.lightGray
           ),
-          width: 40,
-          height: 6,
+          width: widgetSize.pagerDotsWidth,
+          height: widgetSize.pageDotsHeight,
           margin: (i==qty-1)?EdgeInsets.only(right: 0):EdgeInsets.only(right: 15),
         ),
 

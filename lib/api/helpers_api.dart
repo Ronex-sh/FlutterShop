@@ -16,10 +16,10 @@ class HelpersApi {
     'Accept':'application/json',
   };
 
-  Future<List<ProductCategory>>fetchCategories(int page)async {
+  Future<List<ProductCategory>>fetchCategories()async {
 
 
-     String url=ApiUtl.CATEGORIES+'?page='+page.toString();
+     String url=ApiUtl.CATEGORIES;
      http.Response response =await http.get(url,headers: Headers);
      List<ProductCategory>categories=[];
      if(response.statusCode==200){

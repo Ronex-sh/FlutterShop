@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:generalshop/screens/home_page.dart';
 import 'package:generalshop/screens/onboarding/onboarding.dart';
+import 'package:generalshop/screens/utilities/screen_utilities.dart';
+import 'package:generalshop/screens/utilities/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter/services.dart';
 
 //import 'package:generalshop/api/authentication.dart';
 //import 'package:generalshop/api/helpers_api.dart';
@@ -20,15 +22,62 @@ void main ()async{
   }
 
   runApp(GeneralShop(homepage));
+
+
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.white, // navigation bar color
+    statusBarColor: Colors.white, // status bar color
+    systemNavigationBarIconBrightness: Brightness.dark,
+
+  ));
+
 }
 class GeneralShop extends StatelessWidget {
   final Widget homepage;
 
   GeneralShop(this.homepage);
 
+
   @override
   Widget build(BuildContext context) {
+
+
     return MaterialApp(
+      theme: ThemeData(
+          primaryColor: Colors.white,
+          backgroundColor: Colors.white,
+          scaffoldBackgroundColor: Colors.white,
+          appBarTheme: AppBarTheme(
+            actionsIconTheme:IconThemeData(
+         color:ScreenUtilities.textColor
+       ) ,
+            elevation: 0,
+            textTheme: TextTheme(
+                title: TextStyle(
+                  color: ScreenUtilities.textColor,
+                  fontFamily: "Quicksand",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20
+                )
+            ),
+          ),
+
+//       primaryIconTheme: IconThemeData(
+//         color:ScreenUtilities.textColor
+//       )
+
+      tabBarTheme: TabBarTheme(
+        labelColor: ScreenUtilities.textColor,
+        labelStyle: TextStyle(
+          fontFamily:"Quicksand",
+          fontWeight: FontWeight.w700,
+          fontSize: 20
+        ),
+        labelPadding: EdgeInsets.only(left: 12,right: 12,bottom: 7),
+
+      ),
+
+      ),
       title: 'General Shop',
       home: homepage,
       debugShowCheckedModeBanner: false,

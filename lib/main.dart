@@ -67,6 +67,7 @@ class GeneralShop extends StatelessWidget {
 //       )
 
       tabBarTheme: TabBarTheme(
+
         labelColor: ScreenUtilities.textColor,
         labelStyle: TextStyle(
           fontFamily:"Quicksand",

@@ -57,8 +57,17 @@ class GeneralShop extends StatelessWidget {
                   color: ScreenUtilities.textColor,
                   fontFamily: "Quicksand",
                   fontWeight: FontWeight.w700,
-                  fontSize: 20
-                )
+                  fontSize: 20,
+
+                ),
+              subtitle: TextStyle(
+                  color: ScreenUtilities.textColor,
+                  fontFamily: "Quicksand",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 8,
+
+              ),
+
             ),
           ),
 

@@ -5,6 +5,7 @@ import 'package:generalshop/api/helpers_api.dart';
 import 'package:generalshop/product/home_products.dart';
 import 'package:generalshop/product/product.dart';
 import 'package:generalshop/product/product_category.dart';
+import 'package:generalshop/screens/single_product.dart';
 import 'package:generalshop/screens/streams/dots_stream.dart';
 import 'package:generalshop/screens/utilities/helpers_widgets.dart';
 import 'package:generalshop/screens/utilities/screen_utilities.dart';
@@ -24,7 +25,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   int currentIndex = 0;
   int dotcurrentIndex = 1;
   HomeProductBloc homeProductBloc;
-  DotsStream dotsStream = DotsStream();
+ // DotsStream dotsStream = DotsStream(); DotsStream بدل ال ValueNotifier نستخدم
+  ValueNotifier<int> dotsIndex=ValueNotifier(1);// يبتدأ من الاندكس 1 مثل initialPage
   List<ProductCategory> productsCategories;
 
   @override
@@ -43,7 +45,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void dispose() {
     tabController.dispose();
     homeProductBloc.dispose();
-    dotsStream.dispose();
+  //  dotsStream.dispose();
     super.dispose();
   }
 
@@ -198,6 +200,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           child: PageView.builder(
               onPageChanged: (int index) {
                 //  dotsStream.dotsSink.add(index);
+                dotsIndex.value=index;
               },
               controller: pageController,
               scrollDirection: Axis.horizontal,
@@ -205,7 +208,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               itemBuilder: (context, position) {
                 return InkWell(
                   onTap: (){
-                    print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+                   _dotoSingleProduct(topProducts[position], context);
                   },
                   child: Card(
                     shape: RoundedRectangleBorder(
@@ -225,6 +228,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 );
               }),
         ),
+
+
+            ValueListenableBuilder(
+
+              valueListenable: dotsIndex,// كلما تغيرت الدوت اندكس يقوم ال   valueListenable بأخبار ال ValueListenableBuilder والبيلدر يقوم باعادة بناء الودجيت
+              builder: (context,value,_)//اذا اردنا ان لانستخدم الخيار الثالث بأمكاننا في دارت ان نتجاوزه بوضع (_)
+              {//الفاليو هي قيمة dotsIndex بحالتها الجديده
+                return Container(
+                  padding: EdgeInsets.only(top: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: _drawDots(topProducts.length, value),
+                  ),
+                );
+              }
+            ),
+
+
         Flexible(
           child: Padding(
             padding: EdgeInsets.only(left: 8,right: 8,top: 20),
@@ -238,7 +259,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: (){
-                      print(products[index].product_title);
+                      _dotoSingleProduct(products[index], context);
+                     // print(products[index].product_title);
                     },
                     child: Column(
                       children: <Widget>[
@@ -282,8 +304,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               color: (i == index)
                   ? ScreenUtilities.mainBlue
                   : ScreenUtilities.lightGray),
-          width: 13,
-          height: 13,
+          width: 12,
+          height: 7,
           margin: (i == qty - 1)
               ? EdgeInsets.only(right: 0)
               : EdgeInsets.only(right: 10),
@@ -301,5 +323,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ));
     }
     return tabs;
+  }
+  void _dotoSingleProduct(Product product,BuildContext context){
+  Navigator.push(context, MaterialPageRoute(builder: (context){
+    return SingleProduct(product);
+  }));
   }
 }
